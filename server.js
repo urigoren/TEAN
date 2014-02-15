@@ -1,4 +1,4 @@
-/// <reference path="d.ts/express.d.ts" />
+/// <reference path=".d.ts/express.d.ts" />
 /**
 * Module dependencies.
 */
@@ -36,9 +36,8 @@ var app_js = ("var app = angular.module('app',['ngRoute']);") + "\n";
 
 //config router
 app_js += ("app.config(function ($routeProvider) {") + "\n";
-var files = fs.readdirSync('./public/app_views/');
-for (var i = 0; i < files.length; i++) {
-    var view = files[i].replace(".html", "");
+fs.readdirSync('./public/app_views/').forEach(function (file) {
+    var view = file.replace(".html", "");
     if ((view == 'index') || (view == 'default') || (view == 'home'))
         app_js += ("$routeProvider.when('/', {") + "\n";
     else
@@ -46,7 +45,7 @@ for (var i = 0; i < files.length; i++) {
     app_js += ("templateUrl: 'app_views/" + view + ".html',") + "\n";
     app_js += ("controller: '" + view + "'") + "\n";
     app_js += ("});") + "\n";
-}
+});
 app_js += ("$routeProvider.otherwise({ redirectTo: '/' });") + "\n";
 app_js += ("});") + "\n";
 
@@ -73,7 +72,16 @@ fs.readdirSync("./api").forEach(function (file) {
         }
     }
 });
-app_js += ("});");
+app_js += ("});") + "\n";
+
+//merge all js files in app_js
+fs.readdirSync("./public/app_js").forEach(function (file) {
+    if (file.indexOf('.js') >= 0) {
+        app_js += (fs.readFileSync("./public/app_js/" + file)) + "\n";
+    }
+});
+
+//write app.js
 fs.writeFile("./public/app.js", app_js, function (err) {
     if (err) {
         console.log(err);
