@@ -1,14 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
   <head>
     <title><%= title %></title>
+    <meta charset="utf-8" />
     <link rel='stylesheet' href='/stylesheets/style.css' />      
 	<script src="http://code.angularjs.org/1.2.7/angular.min.js"></script>
 	<script src="http://code.angularjs.org/1.2.7/angular-route.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div class="header"><%= title %></div>
+	<div class="menu">
+		<ul>
+		<li><a href="#/">Welcome</a></li>
+		<li><a href="#/remote">Server API example</a></li>
+            <li><a href="#/local">Angular Databinding example</a></li>
+		</ul>
+	</div>
+	<div class="content" ng-view>
+	</div>
   </body>
 </html>

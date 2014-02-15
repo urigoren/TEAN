@@ -6,3 +6,21 @@ body {
 a {
   color: #00B7FF;
 }
+
+.header
+{
+	font-size: 50px;
+	text-align: center;
+}
+.menu
+{
+	float: left;
+	width: 20%;
+	background-color: #eee;
+}
+.content
+{
+	float: right;
+	width: 80%;
+	text-align: center;
+}

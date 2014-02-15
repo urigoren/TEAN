@@ -56,15 +56,15 @@ var app_js =("var app = angular.module('app',['ngRoute']);")+"\n";
         {
             var mod=require("./api/" + file);
             var file_no_js=file.replace('.js','');
-            app_js+= ("this."+file_no_js+"='';")+"\n";
+            app_js+= ("this."+file_no_js+"={};")+"\n";
             for (var f in mod) {
               if (typeof mod[f] == 'function')
               {
-                server.get('/'+file_no_js+'.'+f, mod[f]);
+                server.post('/'+file_no_js+'.'+f, mod[f]);
                 var func=file_no_js+'.'+f;
                 		app_js+= ("this."+func+"=function (js_data,success_fn) {")+"\n";
 				        app_js+= ("$http({")+"\n";
-				        app_js+= ("url: '/"+func+"',")+"\n";
+				        app_js+= ("url: '/"+func+"?rand='+(''+Math.random()).replace('0.',''),")+"\n";
 				        app_js+= ("method: \"POST\",")+"\n";
 				        app_js+= ("data: json=js_data,")+"\n";
 				        app_js+= ("headers: {'Content-Type': 'application/json'}")+"\n";

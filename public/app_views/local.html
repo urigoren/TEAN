@@ -1,0 +1,12 @@
+<h1>Angular Controller example</h1>
+<p>
+    This page demonstrates the power of angular's two-way bindig
+</p>
+
+<h2>Multiple instances of one model</h2>
+<p>This sample shows how one model can be reflected many times, and be updated
+</p>
+<h3>{{model.sample}}</h3>
+This field: <input type="text" ng-model="model.sample"> sets the header,<br />
+And is always equal to <input type="text" ng-model="model.sample"> <br />
+<input type="button" value="{{model.sample}}" ng-click="do_something()"/>

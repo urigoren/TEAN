@@ -1,0 +1,18 @@
+<h1>Server API example</h1>
+<p>
+    This page has 3 sample functions that are invoked on the server
+</p>
+<h2>echo function</h2>
+<p>This call invokes the "echo" function on the "sample" api module<br />
+<i>echo(): will return the same value as the parameter</i></p>
+Parameter: <input type="text" ng-model="model.param"><br />
+<input type="button" ng-click="server_echo()" value="echo()"><br />
+Server Response: {{model.response}}
+<h2>add function</h2>
+<p>This call invokes the "add" function on the "sample" api module <br />
+<i>add(): will add two numbers</i>
+</p>
+Num1: <input type="text" ng-model="model.num1"><br />
+Num2: <input type="text" ng-model="model.num2"><br />
+<input type="button" ng-click="server_add()" value="add()"><br />
+Server Response: {{model.add_result}}

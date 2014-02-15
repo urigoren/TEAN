@@ -1,4 +1,0 @@
-Express server listening on port \\.\pipe\b9d6acfd-ee50-4c69-96a4-34dda68f7e7a
-The file was saved!
-[90mGET / [32m200 [90m6ms - 417b[0m
-[90mGET / [36m304 [90m1ms[0m
