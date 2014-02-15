@@ -1,0 +1,12 @@
+Application has thrown an uncaught exception and is terminated:
+Error: .get() requires callback functions but got a [object Object]
+    at Router.route.Route.sensitive (C:\Users\Goren\Documents\My Web Sites\primero\node_modules\express\lib\router\index.js:291:11)
+    at Array.forEach (native)
+    at Router.route (C:\Users\Goren\Documents\My Web Sites\primero\node_modules\express\lib\router\index.js:287:13)
+    at Router.methods.forEach.Router.(anonymous function) [as get] (C:\Users\Goren\Documents\My Web Sites\primero\node_modules\express\lib\router\index.js:318:16)
+    at Function.methods.forEach.app.(anonymous function) [as get] (C:\Users\Goren\Documents\My Web Sites\primero\node_modules\express\lib\application.js:412:26)
+    at C:\Users\Goren\Documents\My Web Sites\primero\server.js:33:12
+    at Array.forEach (native)
+    at Object.<anonymous> (C:\Users\Goren\Documents\My Web Sites\primero\server.js:32:25)
+    at Module._compile (module.js:449:26)
+    at Object.Module._extensions..js (module.js:467:10)

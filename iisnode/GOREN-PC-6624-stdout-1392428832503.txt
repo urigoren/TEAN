@@ -1,0 +1,4 @@
+Express server listening on port \\.\pipe\df768101-38ef-4719-86a5-3bb74470e490
+{ [Error: ENOENT, open 'C:\public\app.js'] errno: 34, code: 'ENOENT', path: 'C:\\public\\app.js' }
+[90mGET / [36m304 [90m8ms[0m
+[90mGET /app.js [33m404 [90m1ms[0m
