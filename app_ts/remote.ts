@@ -1,4 +1,4 @@
-/// <reference path="../../.d.ts/api.d.ts" />
+/// <reference path="../.d.ts/api.d.ts" />
 app.controller("remote", function ($scope, api:i_api) {
     $scope.model = {};
     $scope.model.param = "sample parameter";

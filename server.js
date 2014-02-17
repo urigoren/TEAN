@@ -1,20 +1,27 @@
 /// <reference path=".d.ts/express.d.ts" />
-/**
-* Module dependencies.
+/*
+--------------------------------------------------------------
+------------- Module dependencies --------------
+-------------------------------------------------------------
 */
 var express = require('express');
 
-//var routes = require('./routes');
+//var routes = require('./server_routes');
 var http = require('http');
 var path = require('path');
 var fs = require("fs");
 var exec = require('child_process').exec;
 
+/*
+--------------------------------------------------------------
+------------- Server Config --------------
+-------------------------------------------------------------
+*/
 var server = express();
 
 // all environments
 server.set('port', process.env.PORT || 3000);
-server.set('views', path.join(__dirname, 'views'));
+server.set('views', path.join(__dirname, 'server_views'));
 server.set('view engine', 'ejs');
 server.use(express.favicon());
 server.use(express.logger('dev'));
@@ -29,10 +36,25 @@ if ('development' == server.get('env')) {
     server.use(express.errorHandler());
 }
 
-//ejb routes
-fs.readdirSync("./routes").forEach(function (file) {
+/*
+--------------------------------------------------------------
+------------- Typescript related --------------
+-------------------------------------------------------------
+*/
+// Move compiled javascript from app_ts to app_js
+fs.readdirSync("./app_ts").forEach(function (file) {
+    if ((file.indexOf('.js') >= 0) && (file != 'app.js'))
+        fs.renameSync("./app_ts/" + file, "./public/app_js/" + file);
+});
+
+/*
+--------------------------------------------------------------
+------------- Server Pages Routing --------------
+-------------------------------------------------------------
+*/
+fs.readdirSync("./server_routes").forEach(function (file) {
     if (file.indexOf('.js') >= 0) {
-        var route_module = require("./routes/" + file);
+        var route_module = require("./server_routes/" + file);
         var new_route = file.replace('.js', '');
         if ('index' == new_route)
             server.get('/', route_module.route);
@@ -41,8 +63,13 @@ fs.readdirSync("./routes").forEach(function (file) {
     }
 });
 
+/*
+--------------------------------------------------------------
+------------- API function routing --------------
+-------------------------------------------------------------
+*/
 //generate Angular routing
-var app_js = ("var app = angular.module('app',['ngRoute']);") + "\n";
+var app_js = (fs.readFileSync("./app_ts/app.js")) + "\n";
 
 //config router
 app_js += ("app.config(function ($routeProvider) {") + "\n";
@@ -65,9 +92,9 @@ var api_d_ts_callback = ': (model: any, callback: (data:any)=>void)=>ng.IHttpSer
 api_d_ts += ('declare var app:ng.IModule;') + "\n";
 api_d_ts += ('interface i_api {') + "\n";
 app_js += ("app.service( 'api', function($http) {") + "\n";
-fs.readdirSync("./api").forEach(function (file) {
+fs.readdirSync("./server_api").forEach(function (file) {
     if (file.indexOf('.js') >= 0) {
-        var api_module = require("./api/" + file);
+        var api_module = require("./server_api/" + file);
         var file_no_js = file.replace('.js', '');
         app_js += ("this." + file_no_js + "={};") + "\n";
         api_d_ts += "\t" + (file_no_js + ': {') + "\n";
@@ -119,7 +146,11 @@ if ('development' == server.get('env')) {
     });
 }
 
-//Start the server
+/*
+--------------------------------------------------------------
+------------- Start the server --------------
+-------------------------------------------------------------
+*/
 http.createServer(server).listen(server.get('port'), function () {
     console.log('Express server listening on port ' + server.get('port'));
 });

@@ -1,4 +1,6 @@
-var app = angular.module('app',['ngRoute']);
+/// <reference path="../.d.ts/angular.d.ts" />
+var app = angular.module('app', ['ngRoute']);
+
 app.config(function ($routeProvider) {
 $routeProvider.when('/', {
 templateUrl: 'app_views/home.html',
@@ -41,7 +43,7 @@ app.controller("local", function ($scope) {
     $scope.do_something = function () { alert ($scope.model.sample);};
 });
 
-/// <reference path="../../.d.ts/api.d.ts" />
+/// <reference path="../.d.ts/api.d.ts" />
 app.controller("remote", function ($scope, api) {
     $scope.model = {};
     $scope.model.param = "sample parameter";
