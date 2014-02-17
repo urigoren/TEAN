@@ -43,7 +43,7 @@ if ('development' == server.get('env')) {
 */
 // Move compiled javascript from app_ts to app_js
 fs.readdirSync("./app_ts").forEach(function (file) {
-    if ((file.indexOf('.js') >= 0) && (file != 'app.js'))
+    if (file.indexOf('.js') >= 0)
         fs.renameSync("./app_ts/" + file, "./public/app_js/" + file);
 });
 
@@ -69,7 +69,7 @@ fs.readdirSync("./server_routes").forEach(function (file) {
 -------------------------------------------------------------
 */
 //generate Angular routing
-var app_js = (fs.readFileSync("./app_ts/app.js")) + "\n";
+var app_js = (fs.readFileSync("./public/app_js/app.js")) + "\n";
 
 //config router
 app_js += ("app.config(function ($routeProvider) {") + "\n";
@@ -121,7 +121,7 @@ api_d_ts += ('}') + "\n";
 
 //merge all js files in app_js
 fs.readdirSync("./public/app_js").forEach(function (file) {
-    if (file.indexOf('.js') >= 0) {
+    if ((file.indexOf('.js') >= 0) && (file != 'app.js')) {
         app_js += (fs.readFileSync("./public/app_js/" + file)) + "\n";
     }
 });
