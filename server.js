@@ -60,7 +60,8 @@ app_js += ("$routeProvider.otherwise({ redirectTo: '/' });") + "\n";
 app_js += ("});") + "\n";
 
 //config api access service
-var api_d_ts = ('interface i_api_request {model: any; callback: (data:any)=>void;}') + "\n";
+var api_d_ts = ('/// <reference path="angular.d.ts" />') + "\n";
+api_d_ts += ('interface i_api_request {model: any; callback: (data:any)=>ng.IHttpService;}') + "\n";
 api_d_ts += ('interface i_api {') + "\n";
 app_js += ("app.service( 'api', function($http) {") + "\n";
 fs.readdirSync("./api").forEach(function (file) {
@@ -74,7 +75,7 @@ fs.readdirSync("./api").forEach(function (file) {
                 server.post('/' + file_no_js + '.' + api_func, api_module[api_func]);
                 var func = file_no_js + '.' + api_func;
                 app_js += ("this." + func + "=function (js_data,success_fn) {") + "\n";
-                app_js += ("$http({") + "\n";
+                app_js += ("return $http({") + "\n";
                 app_js += ("url: '/" + func + "?rand='+(''+Math.random()).replace('0.',''),") + "\n";
                 app_js += ("method: \"POST\",") + "\n";
                 app_js += ("data: json=js_data,") + "\n";

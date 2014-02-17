@@ -17,7 +17,7 @@ $routeProvider.otherwise({ redirectTo: '/' });
 app.service( 'api', function($http) {
 this.sample={};
 this.sample.echo=function (js_data,success_fn) {
-$http({
+return $http({
 url: '/sample.echo?rand='+(''+Math.random()).replace('0.',''),
 method: "POST",
 data: json=js_data,
@@ -25,7 +25,7 @@ headers: {'Content-Type': 'application/json'}
 }).success(function (json) {var data=angular.fromJson(json);success_fn(data);});
 };
 this.sample.add=function (js_data,success_fn) {
-$http({
+return $http({
 url: '/sample.add?rand='+(''+Math.random()).replace('0.',''),
 method: "POST",
 data: json=js_data,
