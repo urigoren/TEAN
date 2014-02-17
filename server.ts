@@ -4,7 +4,7 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
+//var routes = require('./routes');
 var http = require('http');
 var path = require('path');
 var fs  =   require("fs");
@@ -30,7 +30,17 @@ if ('development' == server.get('env')) {
 }
 
 //ejb routes
-server.get('/', routes.index);
+fs.readdirSync("./routes").forEach(function(file) {
+        if (file.indexOf('.js')>=0)
+        {
+            var route_func=require("./routes/" + file);
+            var new_route=file.replace('.js','');
+            if ('index'==new_route)
+                server.get('/', route_func);
+            else
+                server.get('/'+new_route, route_func);
+        }
+});
 
 //generate Angular routing
 var app_js =("var app = angular.module('app',['ngRoute']);")+"\n";
@@ -56,14 +66,14 @@ var app_js =("var app = angular.module('app',['ngRoute']);")+"\n";
     fs.readdirSync("./api").forEach(function(file) {
         if (file.indexOf('.js')>=0)
         {
-            var mod=require("./api/" + file);
+            var api_module=require("./api/" + file);
             var file_no_js=file.replace('.js','');
             app_js+= ("this."+file_no_js+"={};")+"\n";
-            for (var f in mod) {
-              if (typeof mod[f] == 'function')
+            for (var api_func in api_module) {
+              if (typeof api_module[api_func] == 'function')
               {
-                server.post('/'+file_no_js+'.'+f, mod[f]);
-                var func=file_no_js+'.'+f;
+                server.post('/'+file_no_js+'.'+api_func, api_module[api_func]);
+                var func=file_no_js+'.'+api_func;
                 		app_js+= ("this."+func+"=function (js_data,success_fn) {")+"\n";
 				        app_js+= ("$http({")+"\n";
 				        app_js+= ("url: '/"+func+"?rand='+(''+Math.random()).replace('0.',''),")+"\n";

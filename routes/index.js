@@ -1,8 +1,9 @@
 
-/*
- * GET home page.
- */
-
-exports.index = function(req, res){
+function get_title()
+{
+    return 'TEAN Example';
+}
+//exports the routing functions
+exports = function(req, res){
   res.render('index', { title: 'TEAN Example' });
 };
