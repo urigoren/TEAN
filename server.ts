@@ -33,12 +33,12 @@ if ('development' == server.get('env')) {
 fs.readdirSync("./routes").forEach(function(file) {
         if (file.indexOf('.js')>=0)
         {
-            var route_func=require("./routes/" + file);
+            var route_module=require("./routes/" + file);
             var new_route=file.replace('.js','');
             if ('index'==new_route)
-                server.get('/', route_func);
+                server.get('/', route_module.route);
             else
-                server.get('/'+new_route, route_func);
+                server.get('/'+new_route, route_module.route);
         }
 });
 
@@ -69,6 +69,7 @@ var app_js =("var app = angular.module('app',['ngRoute']);")+"\n";
             var api_module=require("./api/" + file);
             var file_no_js=file.replace('.js','');
             app_js+= ("this."+file_no_js+"={};")+"\n";
+            api_d_ts+= "\t"+(file_no_js +': {') + "\n";
             for (var api_func in api_module) {
               if (typeof api_module[api_func] == 'function')
               {
@@ -82,9 +83,10 @@ var app_js =("var app = angular.module('app',['ngRoute']);")+"\n";
 				        app_js+= ("headers: {'Content-Type': 'application/json'}")+"\n";
 			            app_js+= ("}).success(function (json) {var data=angular.fromJson(json);success_fn(data);});")+"\n";
 			            app_js+= ("};")+"\n";
-                        api_d_ts +=(func+': i_api_request;')+"\n"
+                        api_d_ts +="\t\t"+(api_func+': i_api_request;')+"\n"
               }
             }
+            api_d_ts+= "\t"+('}') + "\n";
         }
     });
     app_js+= ("});")+"\n";

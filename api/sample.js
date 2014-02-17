@@ -1,7 +1,3 @@
-exports.const = function (req, res)
-{
-    res.json('value');
-};
 exports.echo = function(req, res)
 {
   res.json(req.param('param'));
