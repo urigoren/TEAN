@@ -61,7 +61,7 @@ var app_js =("var app = angular.module('app',['ngRoute']);")+"\n";
 
     //config api access service
     var api_d_ts = ('/// <reference path="angular.d.ts" />')+"\n";
-    api_d_ts +=('interface i_api_request {model: any; callback: (data:any)=>ng.IHttpService;}')+"\n";
+    var api_d_ts_callback =': (model: any, callback: (data:any)=>void)=>ng.IHttpService;';
     api_d_ts +=('interface i_api {')+"\n"
     app_js +=("app.service( 'api', function($http) {")+"\n";
     fs.readdirSync("./api").forEach(function(file) {
@@ -84,7 +84,7 @@ var app_js =("var app = angular.module('app',['ngRoute']);")+"\n";
 				        app_js+= ("headers: {'Content-Type': 'application/json'}")+"\n";
 			            app_js+= ("}).success(function (json) {var data=angular.fromJson(json);success_fn(data);});")+"\n";
 			            app_js+= ("};")+"\n";
-                        api_d_ts +="\t\t"+(api_func+': i_api_request;')+"\n"
+                        api_d_ts +="\t\t"+(api_func+api_d_ts_callback)+"\n"
               }
             }
             api_d_ts+= "\t"+('}') + "\n";
