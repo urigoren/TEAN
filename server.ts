@@ -62,6 +62,7 @@ var app_js =("var app = angular.module('app',['ngRoute']);")+"\n";
     //config api access service
     var api_d_ts = ('/// <reference path="angular.d.ts" />')+"\n";
     var api_d_ts_callback =': (model: any, callback: (data:any)=>void)=>ng.IHttpService;';
+    api_d_ts +=('declare var app:ng.IModule;')+"\n";
     api_d_ts +=('interface i_api {')+"\n"
     app_js +=("app.service( 'api', function($http) {")+"\n";
     fs.readdirSync("./api").forEach(function(file) {
