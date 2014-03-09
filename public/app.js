@@ -1,6 +1,7 @@
 /// <reference path="../.d.ts/angular.d.ts" />
 var app = angular.module('app', ['ngRoute']);
 
+
 app.config(function ($routeProvider) {
 $routeProvider.when('/', {
 templateUrl: 'app_views/home.html',
@@ -35,6 +36,7 @@ headers: {'Content-Type': 'application/json'}
 }).success(function (json) {var data=angular.fromJson(json);success_fn(data);});
 };
 });
+
 app.controller("home", function ($scope) {
     $scope.title = "Home";
 });
