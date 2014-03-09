@@ -11,6 +11,10 @@ $routeProvider.when('/remote', {
 templateUrl: 'app_views/remote.html',
 controller: 'remote'
 });
+$routeProvider.when('/socket_test', {
+templateUrl: 'app_views/socket_test.html',
+controller: 'socket_test'
+});
 $routeProvider.otherwise({ redirectTo: '/' });
 });
 app.service( 'api', function($http) {

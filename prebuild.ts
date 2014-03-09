@@ -102,6 +102,8 @@ sockets_js+= ("})")+"\n";
             {
                 var socket_module=require("./server_sockets/" + file);
                 var socket_message=file.replace('.js','');
+                if (socket_message=='connect')
+                    continue;
                 //TODO: write per message functions
                 sockets_js+= ("this."+socket_message+"=function (msg,callback) {socket.emit('"+socket_message+"',msg,callback);};") +"\n";
             }
@@ -120,7 +122,7 @@ sockets_js+= ("});")+"\n";
     var app_js =(fs.readFileSync("./public/app_js/app.js")) +"\n";
     app_js +=(fs.readFileSync("./public/app_js/routes.js")) +"\n";
     app_js += (routes_js) +"\n";
-    app_js += (sockets_js) +"\n";
+    //app_js += (sockets_js) +"\n";
     fs.readdirSync("./public/app_js").forEach(function(file) {
         if ((file.indexOf('.js')>=0)&&(file!='app.js')&&(file!='routes.js'))
         {
