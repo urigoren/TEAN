@@ -67,7 +67,7 @@ var routes_js = '';
     routes_js+= ("});")+"\n";
     api_d_ts +=('}')+"\n"
 
-    //Write routes
+    //Write routes.js
     fs.writeFile("./public/app_js/routes.js", routes_js, function(err) {
     if(err) {
         console.log('routes.js: '+err);
@@ -76,21 +76,51 @@ var routes_js = '';
     }
     });
 //------------------------------SOCKETS IO---------------------------------------//
-var sockets_js =("app.service( 'socket', function($http) {")+"\n";
+var sockets_js =("app.service( 'socket', function($rootScope) {")+"\n";
+sockets_js+= ("var socket=io.connect();") +"\n";
+
+sockets_js+= ("this.on= function (eventName, callback) {")+"\n";
+sockets_js+= ("socket.on(eventName, function () {  ")+"\n";
+sockets_js+= ("var args = arguments;")+"\n";
+sockets_js+= ("$rootScope.$apply(function () {")+"\n";
+sockets_js+= ("callback.apply(socket, args);")+"\n";
+sockets_js+= ("});")+"\n";
+sockets_js+= ("});")+"\n";
+
+sockets_js+= ("socket.emit(eventName, data, function () {")+"\n";
+sockets_js+= ("var args = arguments;")+"\n";
+sockets_js+= ("$rootScope.$apply(function () {")+"\n";
+sockets_js+= ("if (callback) {")+"\n";
+sockets_js+= ("callback.apply(socket, args);")+"\n";
+sockets_js+= ("}")+"\n";
+sockets_js+= ("});")+"\n";
+sockets_js+= ("})")+"\n";
+
+
     fs.readdirSync("./server_sockets").forEach(function(file) {
             if (file.indexOf('.js')>=0)
             {
                 var socket_module=require("./server_sockets/" + file);
                 var socket_message=file.replace('.js','');
                 //TODO: write per message functions
+                sockets_js+= ("this."+socket_message+"=function (msg,callback) {socket.emit('"+socket_message+"',msg,callback);};") +"\n";
             }
     });
 sockets_js+= ("});")+"\n";
+    //Write sockets.js
+    fs.writeFile("./public/app_js/sockets.js", sockets_js, function(err) {
+    if(err) {
+        console.log('sockets.js: '+err);
+    } else {
+        console.log("Angular's sockets service was created!");
+    }
+    });
 //---------------------------WRITE FILES------------------------------------------//
     //merge all js files in app_js
     var app_js =(fs.readFileSync("./public/app_js/app.js")) +"\n";
     app_js +=(fs.readFileSync("./public/app_js/routes.js")) +"\n";
     app_js += (routes_js) +"\n";
+    app_js += (sockets_js) +"\n";
     fs.readdirSync("./public/app_js").forEach(function(file) {
         if ((file.indexOf('.js')>=0)&&(file!='app.js')&&(file!='routes.js'))
         {
